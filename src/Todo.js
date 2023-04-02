@@ -1,4 +1,4 @@
-import isEmptyString from "../isEmptyString"
+import isEmptyString from "./isEmptyString"
 
 function Todo(title, description, duedate, priority, id = Date.now()) {
   if (typeof title !== "string" || isEmptyString(title)) return
