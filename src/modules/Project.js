@@ -1,5 +1,5 @@
 import Todo from "./Todo"
-import isEmptyString from "./isEmptyString"
+import isEmptyString from "../helpers/isEmptyString"
 const isString = (value) => typeof value === "string"
 const isDate = (value) => Date.prototype.isPrototypeOf(value)
 const isHighMediumOrLow = (value) => {
