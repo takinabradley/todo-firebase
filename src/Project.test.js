@@ -188,7 +188,7 @@ describe("Todo CRUD works correctly", () => {
           undefined,
           "extreme"
         )
-        expect(project.todos).toMatchObject({})
+        expect(project.todos).toEqual({})
       })
     })
   })
@@ -258,7 +258,7 @@ describe("Todo CRUD works correctly", () => {
       const project = Project("empty")
       const success = project.editTodo("nonexistant")
       expect(success).toBe(false)
-      expect(project.todos).toMatchObject({})
+      expect(project.todos).toEqual({})
     })
 
     it("returns false if the field is not 'title' 'description', 'duedate', or 'priority'", () => {
@@ -458,6 +458,6 @@ describe("Todo CRUD works correctly", () => {
     const todos = project.todos
     todos.todo1.title = "hello"
     delete todos.todo2
-    expect(project.todos).not.toMatchObject(todos)
+    expect(project.todos).not.toEqual(todos)
   })
 })
