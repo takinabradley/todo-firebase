@@ -88,6 +88,22 @@ describe("Creates project object correctly", () => {
   })
 })
 
+describe("name changing works correctly", () => {
+  it("doesn't allow name to be changed to empty string", () => {
+    const project = Project("New Project")
+    project.name = ""
+    project.name = "    "
+    expect(project.name).toBe("New Project")
+  })
+
+  it("doesn't allow name to be changed to non-string value", () => {
+    const project = Project("New Project")
+    const badValues = [1, [], 0, {}, true, false, new Date()]
+    badValues.forEach((value) => (project.name = value))
+    expect(project.name).toBe("New Project")
+  })
+})
+
 describe("Todo CRUD works correctly", () => {
   describe("adds todos correctly", () => {
     it("adds a todo with the correct title", () => {

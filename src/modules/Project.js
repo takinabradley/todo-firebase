@@ -101,7 +101,8 @@ export default function Project(name, id = Date.now(), todos = {}) {
       return name
     },
     set name(newName) {
-      if (typeof newName === "string") name = newName
+      if (typeof newName !== "string" || isEmptyString(newName)) return
+      name = newName
     },
     get id() {
       return id
