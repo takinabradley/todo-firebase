@@ -70,9 +70,17 @@ describe("editing project names works correctly", () => {
 
   it("doesn't allow editing a non-existant project", () => {
     const projects = ProjectList()
-    const success = projects.remove("nonexistant")
+    const success = projects.editName("nonexistant", "nonExistant2")
     expect(success).toBe(false)
     expect(projects.list).toEqual({})
+  })
+
+  it("doesn't allow projects to be renamed to an empty string", () => {
+    const projects = ProjectList()
+    projects.add("Project 1")
+    console.log(projects.list["Project 1"].name)
+    const success = projects.editName("Project 1", "")
+    expect(success).toBe(false)
   })
 })
 

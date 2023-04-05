@@ -18,9 +18,10 @@ export default function ProjectList() {
     return true
   }
 
+  /* Note: Project names should only be changed via this function */
   function editName(name, newName) {
-    // if the name exists, don't allow
-    if (list[newName]) return false
+    // if the newName already exists, or the current name doesn't exist, don't allow
+    if (list[newName] || !list[name]) return false
     // attempt to change name
     list[name].name = newName
 
