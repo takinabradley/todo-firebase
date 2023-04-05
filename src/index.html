@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Webpack App</title>
-    </head>
-    <body>
-        <h1>Hello world!</h1>
-        <h2>Tip: Check your console</h2>
-    </body>
-    
+  <head>
+    <meta charset="utf-8" />
+    <title>Webpack App</title>
+  </head>
+  <body>
+    <main class="todo">
+      <div class="sidebar">
+        <form class="add-form">
+          <label for="projectName" class="add-form__name-input-label"
+            >Add a project</label
+          >
+          <input type="text" name="nameInput" class="add-form__name-input" />
+          <button type="button" name="addBtn" class="add-form__add-btn">
+            +
+          </button>
+        </form>
+
+        <div class="project-list"></div>
+      </div>
+
+      <div class="display">
+        <div class="display__heading">
+          <form action="" class="name-form">
+            <input
+              class="name-form__name-input name-form__name-input--readonly"
+              name="nameInput"
+              autocomplete="off"
+              readonly
+            />
+            <button type="button" class="name-form__edit-btn" name="editBtn">
+              Edit
+            </button>
+          </form>
+        </div>
+
+        <div class="display__body">
+          <div class="todo-list"></div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

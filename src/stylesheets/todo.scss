@@ -1,0 +1,51 @@
+.todo {
+  height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  flex: 0 1 0px;
+  background-color: gainsboro;
+  padding: 1em;
+  border-right: 1px solid rgba(128, 128, 128, 0.5);
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.project-list {
+  &__project-name {
+    &--selected {
+      background-color: gray;
+    }
+  }
+}
+
+.display {
+  flex: 1;
+}
+
+.name-form {
+  font-size: 1rem;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background-color: gainsboro;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+
+  &__name-input {
+    flex: 0 1 0px;
+    font-size: inherit;
+    max-width: 20em;
+    border: none;
+
+    &:read-only,
+    &--read-only {
+      background: none;
+      color: inherit;
+      text-overflow: ellipsis;
+    }
+  }
+}
