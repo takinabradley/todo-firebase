@@ -6,6 +6,11 @@ Object.assign(nameForm, {
   nameInput: nameFormElement.elements.nameInput,
   editBtn: nameFormElement.elements.editBtn,
   currentName: "",
+
+  setCurrentName(name) {
+    this.currentName = name
+    return this.currentName
+  },
   toggleReadOnly() {
     if (this.nameInput.readOnly) {
       this.unsetReadOnly()
@@ -28,7 +33,7 @@ Object.assign(nameForm, {
   },
   resizeInput() {
     const length = this.nameInput.value.length
-    const newLength = length / 2 + 1 + "em"
+    const newLength = length + "ch"
     this.nameInput.style.width = newLength
   },
   scrollToStart() {

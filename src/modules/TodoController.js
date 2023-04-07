@@ -33,7 +33,7 @@ function changeProjectName(nameFormEvent) {
 
   const wasChanged = projects.editName(currentName, newName)
   if (wasChanged) {
-    views.nameForm.currentName = newName
+    views.nameForm.setCurrentName(newName)
     views.nameForm.nameInput.value = newName
     views.nameForm.scrollToStart()
     renderProjectList()
@@ -49,7 +49,7 @@ function addNameFormListeners() {
   /* 
     Listeners to toggle the 'name form' readonly state, change the project's
     name if valid, scroll text back to the beginning when readonly is
-    re-applied, and reize the input based on the length of it's value.
+    re-applied, and resize the input based on the length of it's value.
   */
 
   /* 
@@ -103,7 +103,7 @@ function selectProject(e) {
   const projectName = e.target.dataset.projectName
   if (projectName) {
     views.projectList.select(projectName)
-    views.nameForm.currentName = projectName
+    views.nameForm.setCurrentName(projectName)
     views.nameForm.nameInput.value = projectName
     views.nameForm.resizeInput()
   }
