@@ -1,5 +1,7 @@
 import addForm from "./addForm"
-import nameForm from "./nameForm"
+import nameDisplay from "./nameDisplay"
 import projectList from "./projectList"
+import todoList from "./todoList"
+import sidebar from "./sidebar"
 
-export default { nameForm, addForm, projectList }
+export default { nameDisplay, addForm, projectList, todoList, sidebar }

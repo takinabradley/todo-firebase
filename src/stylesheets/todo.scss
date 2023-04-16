@@ -1,16 +1,76 @@
-.todo {
-  height: 100vh;
-  display: flex;
+:root {
+  --fs-small: 1rem;
+  --fs-medium-small: 1.25rem;
+  --fs-medium: 1.5rem;
+  --fs-large: 2rem;
 }
 
-.sidebar {
-  flex: 0 1 0px;
+.todo {
+  font-size: var(--fs-medium);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    background-color: gainsboro;
+    padding: 0 1em;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  }
+  &__main {
+    flex: 1;
+    display: flex;
+    position: relative;
+  }
+}
+
+.todo__sidebar-toggle {
+  flex: 0 0 2.5em;
+  height: 2.5em;
+  appearance: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-image: url(../images/menu.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &:hover {
+    background-color: rgb(200, 200, 200);
+  }
+
+  &:checked {
+    background-color: rgb(200, 200, 200);
+    border: 2px solid gray;
+  }
+}
+
+.name-display {
+  flex: 1;
+  font-size: inherit;
+  text-align: center;
+}
+
+.todo__sidebar {
+  max-width: 300px;
+  position: fixed;
+  height: 100%;
+  z-index: 1;
   background-color: gainsboro;
   padding: 1em;
   border-right: 1px solid rgba(128, 128, 128, 0.5);
+  display: flex;
+  flex-direction: column;
+  transition: all ease-in-out 500ms;
 
   &--hidden {
     display: none;
+  }
+}
+
+.add-form {
+  label[for="projectName"] {
+    font-size: var(--fs-medium-small);
   }
 }
 
@@ -22,30 +82,35 @@
   }
 }
 
-.display {
-  flex: 1;
+.todo-list {
+  position: relative;
+  padding: 1em;
+
+  &__add-btn {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    font-size: inherit;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.1em 0.5em;
+    border-radius: 15px;
+    border: 1px solid gainsboro;
+  }
+
+  &__add-btn-icon {
+    font-size: var(--fs-large);
+  }
 }
 
-.name-form {
-  font-size: 1rem;
-  padding: 1em;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  background-color: gainsboro;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+@media (max-width: 500px) {
+  .todo {
+    font-size: var(--fs-small);
+  }
 
-  &__name-input {
-    flex: 0 1 0px;
-    font-size: inherit;
-    max-width: 20em;
-    border: none;
-
-    &:read-only,
-    &--read-only {
-      background: none;
-      color: inherit;
-      text-overflow: ellipsis;
-    }
+  .todo-list__add-btn-icon {
+    font-size: var(--fs-medium);
   }
 }
