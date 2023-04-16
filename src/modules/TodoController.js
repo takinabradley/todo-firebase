@@ -1,12 +1,15 @@
 import ProjectList from "./ProjectList"
 import views from "../views/views"
-
 const projects = ProjectList()
+
+function getProjectNames() {
+  return Object.keys(projects.list)
+}
 
 function renderProjectList() {
   /* clear the current list of projects and render the new one  */
   views.projectList.clear()
-  views.projectList.render(Object.keys(projects.list))
+  views.projectList.render(getProjectNames())
 }
 
 function addNewProjectAndRenderProjectList(e) {
@@ -26,10 +29,9 @@ function addNewProjectAndRenderProjectList(e) {
 
 function selectProject(projectName) {
   /* 
-    Highlight project name in list and set the current value in nameForm 
+    Highlight project name in list and set the current value in nameDisplay 
     to be the project name
   */
-  console.log("name", projectName)
   if (projectName) {
     views.projectList.select(projectName)
     views.nameDisplay.setName(projectName)
@@ -38,10 +40,15 @@ function selectProject(projectName) {
 }
 
 function changeProjectName(form, currentName, newName) {
+  /* Change a project name if it should be changed, and re-render the list of 
+    projects if it is changed */
   const nameInput = form.projectName
+  const editBtn = form.projectEdit
 
+  console.log("current", currentName, "new", newName)
   if (currentName === newName) {
     views.projectList.toggleReadOnly(nameInput)
+    editBtn.textContent = "Edit"
     return
   }
 
@@ -56,6 +63,13 @@ function changeProjectName(form, currentName, newName) {
 }
 
 function handleEditProjectName(e) {
+  /* 
+    If an input in the list of projects is read-only, allow input and show a 
+    submit button
+
+    If it is not readonly, try to change the project name and return the input
+    to a read-only state
+  */
   if (e.target.className !== "project-list__project-edit") return
   const form = e.target.parentElement
   const editBtn = e.target
@@ -70,14 +84,30 @@ function handleEditProjectName(e) {
   }
 }
 
-views.addForm.form.addEventListener("submit", addNewProjectAndRenderProjectList)
-views.projectList.container.addEventListener("click", (e) =>
-  selectProject(e.target.dataset.projectName)
-)
-views.projectList.container.addEventListener("click", handleEditProjectName)
-views.projectList.container.addEventListener("submit", (e) =>
-  e.preventDefault()
-)
-views.sidebar.toggleButton.addEventListener("click", () =>
-  views.sidebar.toggle()
-)
+/* Add Listeners to each view */
+function applyAddFormListeners() {
+  views.addForm.form.addEventListener(
+    "submit",
+    addNewProjectAndRenderProjectList
+  )
+}
+
+function applyProjectListListeners() {
+  views.projectList.container.addEventListener("click", (e) =>
+    selectProject(e.target.dataset.projectName)
+  )
+  views.projectList.container.addEventListener("click", handleEditProjectName)
+  views.projectList.container.addEventListener("submit", (e) =>
+    e.preventDefault()
+  )
+}
+
+function applySidebarListeners() {
+  views.sidebar.toggleButton.addEventListener("click", () =>
+    views.sidebar.toggle()
+  )
+}
+
+applyAddFormListeners()
+applyProjectListListeners()
+applySidebarListeners()
