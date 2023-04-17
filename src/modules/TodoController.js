@@ -45,7 +45,6 @@ function changeProjectName(form, currentName, newName) {
   const nameInput = form.projectName
   const editBtn = form.projectEdit
 
-  console.log("current", currentName, "new", newName)
   if (currentName === newName) {
     views.projectList.toggleReadOnly(nameInput)
     editBtn.textContent = "Edit"
@@ -84,6 +83,28 @@ function handleEditProjectName(e) {
   }
 }
 
+function addTodoFromFormInfo(e) {
+  e.preventDefault()
+  const selectedProject = views.projectList.selected
+  if (!selectedProject) return
+
+  const form = views.todoList.form
+  const title = form.title.value
+  const description = form.description.value
+  const duedate = new Date(form.duedate.value + "T00:00")
+  const priority = form.priority.value
+
+  const success = projects.list[selectedProject].addTodo(
+    title,
+    description,
+    duedate,
+    priority
+  )
+  console.log(success)
+  console.log(projects.list[selectedProject])
+  if (success) views.todoList.renderTodos(projects.list[selectedProject].todos)
+}
+
 /* Add Listeners to each view */
 function applyAddFormListeners() {
   views.addForm.form.addEventListener(
@@ -104,10 +125,32 @@ function applyProjectListListeners() {
 
 function applySidebarListeners() {
   views.sidebar.toggleButton.addEventListener("click", () =>
+    /* show/hide sidebar when the toggle button is clicked */
     views.sidebar.toggle()
   )
+
+  document.addEventListener("click", (e) => {
+    /* Hide sidebar when it's clicked away from */
+    if (
+      views.sidebar.sidebar.contains(e.target) ||
+      e.target === views.sidebar.toggleButton
+    ) {
+      return
+    }
+    views.sidebar.hide()
+  })
+}
+
+function applyTodoListListeners() {
+  views.todoList.addBtn.addEventListener("click", () =>
+    /* Hide and show todo list form when the 'Add Todo' button is clicked */
+    views.todoList.toggleForm()
+  )
+
+  views.todoList.form.addEventListener("submit", addTodoFromFormInfo)
 }
 
 applyAddFormListeners()
 applyProjectListListeners()
 applySidebarListeners()
+applyTodoListListeners()

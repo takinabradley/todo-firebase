@@ -1,9 +1,11 @@
 const container = document.querySelector(".todo-list")
-const heading = container.querySelector(".todo-list__column-headings")
+const form = container.querySelector(".todo-list__form")
+const addBtn = container.querySelector(".todo-list__add-btn")
 const todos = container.querySelector(".todo-list__todos")
 const todoList = {
   container,
-  heading,
+  form,
+  addBtn,
   todos,
   createTodoElement(todo) {
     const todoElement = document.createElement("div")
@@ -13,6 +15,15 @@ const todoList = {
   },
   clearTodos() {
     this.todos.innerHTML = ""
+  },
+  hideForm() {
+    this.form.classList.add("todo-list__form--hidden")
+  },
+  showForm() {
+    this.form.classList.remove("todo-list__form--hidden")
+  },
+  toggleForm() {
+    this.form.classList.toggle("todo-list__form--hidden")
   },
   renderTodos(list) {
     this.clearTodos()

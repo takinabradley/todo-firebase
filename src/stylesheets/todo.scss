@@ -103,6 +103,12 @@
   &__add-btn-icon {
     font-size: var(--fs-large);
   }
+
+  &__form {
+    &--hidden {
+      display: none;
+    }
+  }
 }
 
 @media (max-width: 500px) {

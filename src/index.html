@@ -14,7 +14,7 @@
           class="todo__sidebar-toggle"
           autocomplete="off"
         />
-        <h2 class="name-display"></h2>
+        <h2 class="name-display">Todo</h2>
       </header>
 
       <main class="todo__main">
@@ -33,6 +33,19 @@
         </aside>
 
         <div class="todo-list">
+          <form action="" class="todo-list__form todo-list__form--hidden">
+            <input type="text" name="title" placeholder="title" required />
+            <input type="text" name="description" placeholder="description" />
+            <input type="date" name="duedate" required />
+            <select name="priority" required>
+              <option selected value="high">high</option>
+              <option value="medium">medium</option>
+              <option value="low">low</option>
+            </select>
+
+            <button type="submit">Submit</button>
+          </form>
+
           <button class="todo-list__add-btn">
             Add Todo <span class="todo-list__add-btn-icon">✎</span>
           </button>
