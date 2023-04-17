@@ -1,12 +1,24 @@
 const projectListContainer = document.querySelector(".project-list")
 const projectList = {
   container: projectListContainer,
+  get selected() {
+    /* find the project the user selected, and return it's name */
+    for (let i = 0; i < this.container.children.length; i++) {
+      const nameInput = this.container.children[i].projectName
+      if (
+        nameInput.classList.contains("project-list__project-name--selected")
+      ) {
+        return nameInput.value
+      }
+    }
+
+    /* If nothing is found, return null */
+    return null
+  },
   clear() {
     this.container.innerHTML = ""
   },
   createNameForm(projectName) {
-    /* const form = ProjectNameForm(projectName)
-    return form */
     const nameForm = document.createElement("form")
     nameForm.className = "project-list__project"
     nameForm
@@ -30,8 +42,6 @@ const projectList = {
   },
   render(nameArray) {
     this.clear()
-    /* const forms = nameArray.map(this.createNameForm)
-    this.container.append(...forms.map((form) => form.form)) */
     const elements = nameArray.map(this.createNameForm)
     this.container.append(...elements)
   },
