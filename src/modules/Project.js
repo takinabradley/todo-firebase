@@ -25,7 +25,7 @@ export default function Project(name, id = Date.now(), todos = {}) {
     duedate = new Date(),
     priority = "medium"
   ) {
-    if (!isString(title) || todos[title]) return false
+    if (!isString(title) || todos[title] || isEmptyString(title)) return false
     if (!isString(description)) return false
     if (!isDate(duedate)) return false
     if (!isHighMediumOrLow(priority)) return false

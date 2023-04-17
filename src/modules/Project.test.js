@@ -112,6 +112,15 @@ describe("Todo CRUD works correctly", () => {
       // "project.todos" should contain project.todos['a todo'].title
       expect(project.todos).toHaveProperty(["a todo", "title"], "a todo")
     })
+
+    it("Doesn't add a todo with an empty string", () => {
+      const project = Project("needs names")
+      const success = project.addTodo(" ")
+      const success2 = project.addTodo("")
+      expect(success).toBe(false)
+      expect(success2).toBe(false)
+      expect(project.todos).toEqual({})
+    })
     it("adds a todo with the correct description", () => {
       const project = Project("a project")
       project.addTodo("a todo", "a description")
