@@ -6,12 +6,17 @@ const sidebar = {
   toggleButton,
   hide() {
     this.sidebar.classList.add("todo__sidebar--hidden")
+    this.toggleButton.checked = false
   },
   show() {
     this.sidebar.classList.remove("todo__sidebar--hidden")
   },
   toggle() {
-    this.sidebar.classList.toggle("todo__sidebar--hidden")
+    if (this.sidebar.classList.contains("todo__sidebar--hidden")) {
+      this.show()
+    } else {
+      this.hide()
+    }
   }
 }
 
