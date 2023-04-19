@@ -1,6 +1,29 @@
 import ProjectList from "./ProjectList"
+import storageManager from "./storageManager"
 import views from "../views/views"
 const projects = ProjectList()
+
+function reviveTodoData(todos) {
+  /* changes the duedate in all the todos to be an actual date object. 
+     modified the incoming object 
+  */
+  for (const todo in todos) {
+    todos[todo].duedate = new Date(todos[todo].duedate)
+  }
+  return todos
+}
+
+function addStoredProjectsToProjectList(projectList) {
+  const storedProjects = storageManager.getProjects()
+
+  for (const project in storedProjects) {
+    const success = projectList.add(
+      storedProjects[project].name,
+      storedProjects[project].id,
+      reviveTodoData(storedProjects[project].todos)
+    )
+  }
+}
 
 function getProjectNames() {
   return Object.keys(projects.list)
@@ -24,6 +47,7 @@ function addNewProjectAndRenderProjectList(e) {
     renderProjectList()
     views.addForm.clear()
     selectProject(newProjectName)
+    storageManager.saveProjects(projects.list)
   }
 }
 
@@ -58,6 +82,7 @@ function changeProjectName(form, currentName, newName) {
     views.projectList.toggleReadOnly(nameInput)
     renderProjectList()
     selectProject(newName)
+    storageManager.saveProjects(projects.list)
   }
 }
 
@@ -84,6 +109,7 @@ function handleEditProjectName(e) {
 }
 
 function addTodoFromFormInfo(e) {
+  /* attempt to add a todo to a project when the 'Add Todo' form is submitted */
   e.preventDefault()
   const selectedProject = views.projectList.selected
   if (!selectedProject) return
@@ -100,13 +126,31 @@ function addTodoFromFormInfo(e) {
     duedate,
     priority
   )
-  console.log(success)
-  console.log(projects.list[selectedProject])
-  if (success) views.todoList.renderTodos(projects.list[selectedProject].todos)
+  if (success) {
+    views.todoList.renderTodos(projects.list[selectedProject].todos)
+    storageManager.saveProjects(projects.list)
+  }
+}
+
+function loadProjects() {
+  const storedProjects = storageManager.getProjects()
+  if (storedProjects && Object.keys(storedProjects).length !== 0) {
+    console.log("found stored projects")
+    addStoredProjectsToProjectList(projects)
+    renderProjectList()
+    selectProject(Object.keys(storedProjects)[0]) // select first project in list
+    /* do some firebase shenanegans */
+  } else {
+    projects.add("Default Project")
+    renderProjectList()
+    selectProject("Default Project")
+    storageManager.saveProjects(projects.list)
+  }
 }
 
 /* Add Listeners to each view */
 function applyAddFormListeners() {
+  /* attempt to add a new project when the add form submits */
   views.addForm.form.addEventListener(
     "submit",
     addNewProjectAndRenderProjectList
@@ -114,9 +158,17 @@ function applyAddFormListeners() {
 }
 
 function applyProjectListListeners() {
+  /* 
+    Select the project in the sidebar and render the todos when a project name
+    is clicked
+  */
   views.projectList.container.addEventListener("click", (e) =>
     selectProject(e.target.dataset.projectName)
   )
+
+  /* handle editing of project names when the edit buttons are clicked in the
+     sidebar
+  */
   views.projectList.container.addEventListener("click", handleEditProjectName)
   views.projectList.container.addEventListener("submit", (e) =>
     e.preventDefault()
@@ -150,7 +202,12 @@ function applyTodoListListeners() {
   views.todoList.form.addEventListener("submit", addTodoFromFormInfo)
 }
 
-applyAddFormListeners()
-applyProjectListListeners()
-applySidebarListeners()
-applyTodoListListeners()
+function applyAppListeners() {
+  applyAddFormListeners()
+  applyProjectListListeners()
+  applySidebarListeners()
+  applyTodoListListeners()
+}
+
+applyAppListeners()
+loadProjects()
