@@ -28,7 +28,6 @@ const todoList = {
   renderTodos(list) {
     this.clearTodos()
     const todoElements = Object.values(list).map(this.createTodoElement)
-    console.log(todoElements)
     this.todos.append(...todoElements)
   }
 }
