@@ -135,7 +135,6 @@ function addTodoFromFormInfo(e) {
 function loadProjects() {
   const storedProjects = storageManager.getProjects()
   if (storedProjects && Object.keys(storedProjects).length !== 0) {
-    console.log("found stored projects")
     addStoredProjectsToProjectList(projects)
     renderProjectList()
     selectProject(Object.keys(storedProjects)[0]) // select first project in list
@@ -148,7 +147,20 @@ function loadProjects() {
   }
 }
 
-/* Add Listeners to each view */
+function deleteProject(e) {
+  if (!e.target.classList.contains("project-list__project-delete")) return
+  const form = e.target.parentElement
+  const projectName = form.projectName.value
+  projects.remove(projectName)
+  renderProjectList()
+  storageManager.saveProjects(projects.list)
+}
+
+/* 
+
+  ~~~~~ Event Listeners ~~~~~
+
+*/
 function applyAddFormListeners() {
   /* attempt to add a new project when the add form submits */
   views.addForm.form.addEventListener(
@@ -166,13 +178,17 @@ function applyProjectListListeners() {
     selectProject(e.target.dataset.projectName)
   )
 
-  /* handle editing of project names when the edit buttons are clicked in the
-     sidebar
+  /* 
+    handle editing of project names when the edit buttons are clicked in the
+    sidebar
   */
   views.projectList.container.addEventListener("click", handleEditProjectName)
   views.projectList.container.addEventListener("submit", (e) =>
     e.preventDefault()
   )
+
+  /* Delete a project when a delete button is pressed */
+  views.projectList.container.addEventListener("click", deleteProject)
 }
 
 function applySidebarListeners() {

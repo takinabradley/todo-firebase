@@ -37,7 +37,13 @@ const projectList = {
     editBtn.className = "project-list__project-edit"
     editBtn.name = "projectEdit"
 
-    nameForm.append(nameInput, editBtn)
+    const deleteBtn = document.createElement("button")
+    deleteBtn.type = "button"
+    deleteBtn.textContent = "delete"
+    deleteBtn.className = "project-list__project-delete"
+    deleteBtn.name = "projectDelete"
+
+    nameForm.append(nameInput, editBtn, deleteBtn)
     return nameForm
   },
   render(nameArray) {
