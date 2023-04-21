@@ -10,7 +10,11 @@ const todoList = {
   createTodoElement(todo) {
     const todoElement = document.createElement("div")
     todoElement.className = "todo-list__todo"
-    todoElement.textContent = `${todo.title} | ${todo.description} | ${todo.duedate} | ${todo.priority}`
+    const { title, description, priority, duedate } = todo
+    const dateString =
+      duedate.getMonth() + "/" + duedate.getDate() + "/" + duedate.getFullYear()
+
+    todoElement.textContent = `${title} | ${description} | ${dateString} | ${priority}`
     return todoElement
   },
   clearTodos() {
