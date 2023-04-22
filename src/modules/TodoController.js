@@ -1,7 +1,8 @@
 import ProjectList from "./ProjectList"
 import storageManager from "./storageManager"
 import views from "../views/views"
-const projects = ProjectList()
+import firestore from "./firestore"
+import auth from "./auth"
 
 function reviveTodoData(todos) {
   /* changes the duedate in all the todos to be an actual date object. 
@@ -13,8 +14,9 @@ function reviveTodoData(todos) {
   return todos
 }
 
-function addStoredProjectsToProjectList(projectList) {
-  const storedProjects = storageManager.getProjects()
+async function addStoredProjectsToProjectList(projectList) {
+  /* const storedProjects = storageManager.getProjects() */
+  const storedProjects = await firestore.readProjects()
 
   for (const project in storedProjects) {
     const success = projectList.add(
@@ -47,7 +49,8 @@ function addNewProjectAndRenderProjectList(e) {
     renderProjectList()
     views.addForm.clear()
     selectProject(newProjectName)
-    storageManager.saveProjects(projects.list)
+    /* storageManager.saveProjects(projects.list) */
+    firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
   }
 }
 
@@ -82,7 +85,8 @@ function changeProjectName(form, currentName, newName) {
     views.projectList.toggleReadOnly(nameInput)
     renderProjectList()
     selectProject(newName)
-    storageManager.saveProjects(projects.list)
+    /* storageManager.saveProjects(projects.list) */
+    firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
   }
 }
 
@@ -128,14 +132,17 @@ function addTodoFromFormInfo(e) {
   )
   if (success) {
     views.todoList.renderTodos(projects.list[selectedProject].todos)
-    storageManager.saveProjects(projects.list)
+    /* storageManager.saveProjects(projects.list) */
+    firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
   }
 }
 
-function loadProjects() {
-  const storedProjects = storageManager.getProjects()
+async function loadProjects() {
+  const storedProjects = await firestore.readProjects()
+  console.log(storedProjects)
+  /* const storedProjects = storageManager.getProjects() */
   if (storedProjects && Object.keys(storedProjects).length !== 0) {
-    addStoredProjectsToProjectList(projects)
+    await addStoredProjectsToProjectList(projects)
     renderProjectList()
     selectProject(Object.keys(storedProjects)[0]) // select first project in list
     /* do some firebase shenanegans */
@@ -143,7 +150,8 @@ function loadProjects() {
     projects.add("Default Project")
     renderProjectList()
     selectProject("Default Project")
-    storageManager.saveProjects(projects.list)
+    /* storageManager.saveProjects(projects.list) */
+    firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
   }
 }
 
@@ -153,7 +161,20 @@ function deleteProject(e) {
   const projectName = form.projectName.value
   projects.remove(projectName)
   renderProjectList()
-  storageManager.saveProjects(projects.list)
+  /* storageManager.saveProjects(projects.list) */
+  firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
+}
+
+async function signIn() {
+  const user = await auth.popup()
+  if (user) {
+    firestore.setProjectsDoc(user.uid)
+    return true
+  } else {
+    alert("something went wrong!")
+    firestore.setProjectsDoc("Default")
+    return false
+  }
 }
 
 /* 
@@ -225,5 +246,10 @@ function applyAppListeners() {
   applyTodoListListeners()
 }
 
-applyAppListeners()
-loadProjects()
+const projects = ProjectList()
+signIn().then((isLoggedIn) => {
+  if (isLoggedIn) {
+    applyAppListeners()
+    loadProjects()
+  }
+})
