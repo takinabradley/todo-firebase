@@ -138,6 +138,42 @@
     background-color: gainsboro;
   }
 }
+
+.login-page {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  font-size: var(--fs-large);
+  gap: 1em;
+  &--hidden {
+    display: none;
+  }
+
+  &__google-button {
+    display: flex;
+    align-items: center;
+    height: 3em;
+    padding: 0.5em;
+    gap: 1em;
+    font-size: var(--fs-medium-small);
+    background-color: white;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+
+    & img {
+      height: 100%;
+      min-height: 0;
+    }
+
+    &:focus {
+      border: 1px solid black;
+    }
+  }
 }
 
 @media (max-width: 500px) {

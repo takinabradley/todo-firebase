@@ -165,18 +165,6 @@ function deleteProject(e) {
   firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
 }
 
-async function signIn() {
-  const user = await auth.popup()
-  if (user) {
-    firestore.setProjectsDoc(user.uid)
-    return true
-  } else {
-    alert("something went wrong!")
-    firestore.setProjectsDoc("Default")
-    return false
-  }
-}
-
 /* 
 
   ~~~~~ Event Listeners ~~~~~
@@ -239,17 +227,28 @@ function applyTodoListListeners() {
   views.todoList.form.addEventListener("submit", addTodoFromFormInfo)
 }
 
+function applyLoginPageListeners() {
+  views.loginPage.googleBtn.addEventListener("click", auth.redirect)
+}
+
 function applyAppListeners() {
   applyAddFormListeners()
   applyProjectListListeners()
   applySidebarListeners()
   applyTodoListListeners()
+  applyLoginPageListeners()
+}
+
+async function initApp(user) {
+  if (user) {
+    firestore.setProjectsDoc(user.uid)
+    await loadProjects()
+    views.loginPage.hide()
+    await auth.logout() // we only really need the user's uid and nothing else.
+  }
 }
 
 const projects = ProjectList()
-signIn().then((isLoggedIn) => {
-  if (isLoggedIn) {
-    applyAppListeners()
-    loadProjects()
-  }
-})
+applyAppListeners()
+
+auth.getRedirectedUser().then(initApp)
