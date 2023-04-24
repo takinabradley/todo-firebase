@@ -159,8 +159,15 @@ function deleteProject(e) {
   if (!e.target.classList.contains("project-list__project-delete")) return
   const form = e.target.parentElement
   const projectName = form.projectName.value
+  const currentlySelectedProject = views.projectList.selected
   projects.remove(projectName)
   renderProjectList()
+
+  if (projectName === currentlySelectedProject) {
+    views.todoList.clearTodos()
+    views.nameDisplay.setName("")
+    views.projectList.select(null)
+  }
   /* storageManager.saveProjects(projects.list) */
   firestore.writeProjects(JSON.parse(JSON.stringify(projects.list)))
 }
