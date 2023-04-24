@@ -7,15 +7,48 @@ const todoList = {
   form,
   addBtn,
   todos,
-  createTodoElement(todo) {
-    const todoElement = document.createElement("div")
-    todoElement.className = "todo-list__todo"
+  createTodoCard(todo) {
     const { title, description, priority, duedate } = todo
-    const dateString =
-      duedate.getMonth() + "/" + duedate.getDate() + "/" + duedate.getFullYear()
 
-    todoElement.textContent = `${title} | ${description} | ${dateString} | ${priority}`
-    return todoElement
+    const card = document.createElement("article")
+    card.className = "todo-list__todo"
+
+    const cardTop = document.createElement("header")
+    cardTop.className = "todo-list__todo-top"
+
+    const titleElement = document.createElement("h3")
+    titleElement.classList = "todo-list__todo-title"
+    titleElement.textContent = title
+    cardTop.append(titleElement)
+
+    const cardBottom = document.createElement("div")
+    cardBottom.classList = "todo-list__todo-bottom"
+
+    const descriptionElement = document.createElement("div")
+    descriptionElement.classList = "todo-list__todo-description"
+    descriptionElement.textContent = description
+
+    const priorityElement = document.createElement("div")
+    priorityElement.classList = "todo-list__todo-priority"
+    priorityElement.textContent = priority
+
+    const duedateElement = document.createElement("div")
+    duedateElement.classList = "todo-list__todo-duedate"
+    duedateElement.textContent = `${duedate.getMonth()} / ${duedate.getDate()} / ${duedate.getFullYear()}`
+    cardBottom.append(descriptionElement, priorityElement, duedateElement)
+
+    card.append(cardTop, cardBottom)
+    return card
+  },
+  editTodoCard(card, todoData) {
+    const title = card.querySelector(".todo-list__todo-title")
+    const description = card.querySelector(".todo-list__todo-description")
+    const priority = card.querySelector(".todo-list__todo-priority")
+    const duedate = card.querySelector("todo-list__todo-duedate")
+    title.textContent = todoData.title
+    description.textContent = todoData.description
+    priority.textContent = todoData.priority
+    duedate.textContent = `${duedate.getMonth()} / ${duedate.getDate()} / ${duedate.getFullYear()}`
   },
   clearTodos() {
     this.todos.innerHTML = ""
@@ -31,7 +64,7 @@ const todoList = {
   },
   renderTodos(list) {
     this.clearTodos()
-    const todoElements = Object.values(list).map(this.createTodoElement)
+    const todoElements = Object.values(list).map(this.createTodoCard)
     this.todos.append(...todoElements)
   }
 }
