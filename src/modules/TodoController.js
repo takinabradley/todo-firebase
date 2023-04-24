@@ -244,11 +244,12 @@ async function initApp(user) {
     firestore.setProjectsDoc(user.uid)
     await loadProjects()
     views.loginPage.hide()
-    await auth.logout() // we only really need the user's uid and nothing else.
+    // await auth.logout() // we only really need the user's uid and nothing else.
   }
 }
 
 const projects = ProjectList()
 applyAppListeners()
 
+// listen for google redirect, and if a user is found initialize the app
 auth.getRedirectedUser().then(initApp)
