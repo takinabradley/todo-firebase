@@ -246,7 +246,8 @@ function applyAppListeners() {
   applyLoginPageListeners()
 }
 
-async function initApp(user) {
+async function initApp() {
+  const user = await auth.getRedirectedUser()
   if (user) {
     firestore.setProjectsDoc(user.uid)
     await loadProjects()
@@ -259,4 +260,4 @@ const projects = ProjectList()
 applyAppListeners()
 
 // listen for google redirect, and if a user is found initialize the app
-auth.getRedirectedUser().then(initApp)
+initApp()
